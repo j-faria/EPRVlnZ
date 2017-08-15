@@ -296,7 +296,10 @@ double MyModel::perturb(RNG& rng)
 
     else if(rng.rand() <= 0.5)
     {
+        // need to change logH
+        logH -= Jprior.log_pdf(extra_sigma)
         extra_sigma = Jprior.rvs(rng);
+        logH += Jprior.log_pdf(extra_sigma)
 
         #if GP
             calculate_C();
@@ -314,6 +317,7 @@ double MyModel::perturb(RNG& rng)
         // ymin = Data::get_instance().get_y_min();
         // ymax = Data::get_instance().get_y_max();
 
+        // background = ymin + (ymax - ymin)*rng.rand();
         background += (ymax - ymin)*rng.randh();
         wrap(background, ymin, ymax);
 
