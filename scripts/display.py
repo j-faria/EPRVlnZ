@@ -857,7 +857,7 @@ class DisplayResults(object):
 
             for j in range(nplanets):
                 planet_pars = pars[self.index_component+j+1 : -2 : self.max_components]
-                P = np.exp(planet_pars[0])
+                P = planet_pars[0]
                 K = planet_pars[1]#*1e3
                 phi = planet_pars[2]
                 t0 = t[0] - (P*phi)/(2.*np.pi)
