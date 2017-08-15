@@ -54,7 +54,7 @@ if __name__ == '__main__':
     # effort_metric = 0
     times = open(path.join(dirpath, 'times.txt')).readlines()
     times = [t.strip().split(',') for t in times]
-    times = {int(t[0]): int(float(t[1])*1000) for t in times}
+    times = {int(t[0]): int(float(t[1])) for t in times}
 
 
     fig1 = plt.figure('logZhist')
@@ -68,7 +68,7 @@ if __name__ == '__main__':
 
 
         logz_estimate, H_estimate, logx_samples, posterior_sample = \
-            postprocess(plot=False, numResampleLogX=1,
+            postprocess(plot=False, numResampleLogX=200,
                         loaded=(levels_orig, sample_info, sample))
 
         log10z_estimate = logz_estimate / numpy.log(10.)
