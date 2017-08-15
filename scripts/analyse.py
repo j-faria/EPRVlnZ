@@ -3,6 +3,8 @@ import os
 import os.path as path
 import re
 import subprocess
+import cPickle
+
 # import time
 import datetime
 import shutil
@@ -34,6 +36,7 @@ def get_most_recent_path(system):
 def load_file(filename):
     return numpy.atleast_2d(numpy.loadtxt(filename))
 
+results = {}
 
 if __name__ == '__main__':
     try:
@@ -46,7 +49,7 @@ if __name__ == '__main__':
 
     data_file = open(path.join(dirpath, 'data_file.txt')).read().strip()
     evidence_file = open(path.join(dirpath, 'evidences_%s.txt' % system), 'w')
-
+    save_results_file = path.join(dirpath, 'results_%s.pickle' % system)
 
     # effort_metric = 0
     times = open(path.join(dirpath, 'times.txt')).readlines()
@@ -76,7 +79,8 @@ if __name__ == '__main__':
             print 'Too few samples yet'
 
         assert res.max_components == np
-        res.make_plot2()
+        results[np] = res
+        # res.make_plot2()
 
         ax.plot([np]*log10z_estimate.size, log10z_estimate, 'o')
         # ax.hist(log10z_estimate, label=str(np), normed=True)
@@ -96,3 +100,7 @@ if __name__ == '__main__':
 
     plt.show()
     # fig1.savefig('log10Z_hist.png')
+
+    if not path.exists(save_results_file):
+        print 'saving to', save_results_file
+        cPickle.dump(results, open(save_results_file, 'wb'), protocol=-1)
