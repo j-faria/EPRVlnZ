@@ -182,12 +182,14 @@ def postprocess(temperature=1., numResampleLogX=1, plot=True, loaded=[], \
     P_samples = np.mean(P_samples, 1)
     P_samples = P_samples/np.sum(P_samples)
     logz_estimate = np.mean(logz_estimates)
+    log10z_estimate = logz_estimate / np.log(10.)
     logz_error = np.std(logz_estimates)
     H_estimate = np.mean(H_estimates)
     H_error = np.std(H_estimates)
     ESS = np.exp(-np.sum(P_samples*np.log(P_samples+1E-300)))
 
     print("log(Z) = " + str(logz_estimate) + " +- " + str(logz_error))
+    print("log10(Z) = " + str(log10z_estimate)) #+ " +- " + str(logz_error))
     print("Information = " + str(H_estimate) + " +- " + str(H_error) + " nats.")
     print("Effective sample size = " + str(ESS))
 
