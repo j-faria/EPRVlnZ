@@ -166,8 +166,12 @@ void MyModel::calculate_C()
             for(size_t j=i; j<N; j++)
             {
                 //C(i, j) = eta1*eta1*exp(-0.5*pow((t[i] - t[j])/eta2, 2) );
+                // before
+                // C(i, j) = eta1*eta1*exp(-0.5*pow((t[i] - t[j])/eta2, 2) 
+                //            -2.0*pow(sin(M_PI*(t[i] - t[j])/eta3)/eta4, 2) );
+                // as in model specification for EPRV:
                 C(i, j) = eta1*eta1*exp(-0.5*pow((t[i] - t[j])/eta2, 2) 
-                           -2.0*pow(sin(M_PI*(t[i] - t[j])/eta3)/eta4, 2) );
+                           -0.5*pow(sin(M_PI*(t[i] - t[j])/eta3)/eta4, 2) );
 
                 if(i==j)
                     C(i, j) += sig[i]*sig[i] + extra_sigma*extra_sigma; //+ eta5*t[i]*t[i];
