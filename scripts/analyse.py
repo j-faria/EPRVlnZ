@@ -44,6 +44,15 @@ if __name__ == '__main__':
     except IndexError:
         sys.exit(1)
 
+    numResampleLogX = 1
+    if numResampleLogX == 1:
+        print '*'*50
+        print '*'*50
+        print '!!! WARNING !!!'
+        print 'numResampleLogX = 1  !!!!!!!'
+        print '*'*50
+        print '*'*50
+
     dirpath = get_most_recent_path(system)
     print 'Most recent path is:', dirpath
 
@@ -52,37 +61,44 @@ if __name__ == '__main__':
     save_results_file = path.join(dirpath, 'results_%s.pickle' % system)
 
     # effort_metric = 0
-    times = open(path.join(dirpath, 'times.txt')).readlines()
-    times = [t.strip().split(',') for t in times]
-    times = {int(t[0]): int(float(t[1])) for t in times}
+    try:
+        times = open(path.join(dirpath, 'times.txt')).readlines()
+        times = [t.strip().split(',') for t in times]
+        times = {int(t[0]): int(float(t[1])) for t in times}
+    except IOError:
+        times = {i:i for i in range(4)}
 
-
-    fig1 = plt.figure('logZhist')
-    ax = fig1.add_subplot(111)
+    # fig1 = plt.figure('logZhist')
+    # ax = fig1.add_subplot(111)
 
     # for 0,1,2,3 planets
     for np in range(4):
-        levels_orig = load_file(path.join(dirpath, "levels_%dplanets.txt" % np))
-        sample_info = load_file(path.join(dirpath, "sample_info_%dplanets.txt" % np))
-        sample = load_file(path.join(dirpath, "sample_%dplanets.txt" % np))
-
+        try:
+            levels_orig = load_file(path.join(dirpath, "levels_%dplanets.txt" % np))
+            sample_info = load_file(path.join(dirpath, "sample_info_%dplanets.txt" % np))
+            sample = load_file(path.join(dirpath, "sample_%dplanets.txt" % np))
+        except IOError:
+            # we're still running stuff so there are only these files
+            levels_orig = load_file(path.join(dirpath, "levels.txt"))
+            sample_info = load_file(path.join(dirpath, "sample_info.txt"))
+            sample = load_file(path.join(dirpath, "sample.txt"))            
 
         logz_estimate, H_estimate, logx_samples, posterior_sample = \
-            postprocess(plot=False, numResampleLogX=200,
+            postprocess(plot=False, numResampleLogX=numResampleLogX, # 200,
                         loaded=(levels_orig, sample_info, sample))
 
         log10z_estimate = logz_estimate / numpy.log(10.)
         if posterior_sample.shape[0] > 5:
             res = DisplayResults('', data_file=data_file,)
                                  # posterior_samples_file=path.join(dirpath, 'posterior_sample.txt'))
+            assert res.max_components == np
+            results[np] = res
         else:
             print 'Too few samples yet'
 
-        assert res.max_components == np
-        results[np] = res
         # res.make_plot2()
 
-        ax.plot([np]*log10z_estimate.size, log10z_estimate, 'o')
+        # ax.plot([np]*log10z_estimate.size, log10z_estimate, 'o')
         # ax.hist(log10z_estimate, label=str(np), normed=True)
 
 
@@ -98,7 +114,7 @@ if __name__ == '__main__':
 
     evidence_file.close()
 
-    plt.show()
+    # plt.show()
     # fig1.savefig('log10Z_hist.png')
 
     if not path.exists(save_results_file):
