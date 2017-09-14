@@ -434,7 +434,8 @@ class DisplayResults(object):
             # ax.vlines(aliases2, ymin=0, ymax=1, color='y', alpha=0.4)
             # ax.vlines(aliases3, ymin=0, ymax=1, color='c', alpha=0.4)
             
-            ax2.set_xlim([0.1, 1000])
+            ax2.set_xlim(0.1, 1000)
+            ax2.set_ylim(0, 1)
             ax2.set_xlabel(r'(Period/days)')
             ax2.set_ylabel('Eccentricity')
 
