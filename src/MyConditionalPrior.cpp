@@ -7,8 +7,9 @@ using namespace std;
 using namespace DNest4;
 
 // ModifiedJeffreys Pprior(1.0, 9999.); // days
-Jeffreys Pprior(1.0, 1E4); // days
+Jeffreys Pprior(1.25, 1E4); // days
 ModifiedJeffreys Kprior(1.0, 999.); // m/s
+TruncatedRayleigh eprior(0.2, 0.0, 1.0);
 
 MyConditionalPrior::MyConditionalPrior()
 {
@@ -38,7 +39,7 @@ double MyConditionalPrior::log_pdf(const std::vector<double>& vec) const
 	if(vec[1] < 0. ||
 	   vec[2] < 0. || vec[2] > 2.*M_PI ||
 	   //vec[3] < 0. || vec[3] > 0.8189776 ||
-	   vec[3] < 0. || vec[3] > 1.0 ||
+	   vec[3] < 0. || vec[3] >= 1.0 ||
 	   vec[4] < 0. || vec[4] > 2.*M_PI)
 		 return -1E300;
 
@@ -52,6 +53,7 @@ void MyConditionalPrior::from_uniform(std::vector<double>& vec) const
 	vec[1] = Kprior.cdf_inverse(vec[1]);
 	vec[2] = 2.*M_PI*vec[2];
 	//vec[3] = vec[3]*1.0;
+	vec[3] = eprior.cdf_inverse(vec[3]);
 	vec[4] = 2.*M_PI*vec[4];
 }
 
@@ -61,6 +63,7 @@ void MyConditionalPrior::to_uniform(std::vector<double>& vec) const
 	vec[1] = Kprior.cdf(vec[1]);
 	vec[2] = vec[2]/(2.*M_PI);
 	//vec[3] = vec[3]/1.0;
+	vec[3] = eprior.cdf(vec[3]);
 	vec[4] = vec[4]/(2.*M_PI);
 }
 
