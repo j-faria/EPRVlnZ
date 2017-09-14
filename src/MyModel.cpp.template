@@ -78,6 +78,76 @@ void MyModel::from_prior(RNG& rng)
     #if GP
         calculate_C();
     #endif
+
+    /* TESTS */
+
+        /*dataset 1*/
+        /*cout.precision(15);
+        background = -0.728509750583953064E+00;
+        extra_sigma = 0.208717785347551521E+01;
+        calculate_mu();
+        calculate_C();
+
+        cout << endl << "true:" << -477.199687239 << endl;
+        cout << "this:" << log_likelihood() << endl;
+
+        cout << endl << endl;
+
+        background = 0.;
+        extra_sigma = 0.208717785347551521E+01;
+        calculate_mu();
+        calculate_C();
+        cout << "true:" << -477.932407311 << endl;
+        cout << "this:" << log_likelihood() << endl;
+
+        abort();*/
+
+
+        /*dataset 2*/
+        /*cout.precision(15);
+        background = 0.653665406348636679E+01;
+        extra_sigma = 0.171886843613598783E+01;
+        calculate_mu();
+        calculate_C();
+
+        cout << endl << "true:" << -442.938443624 << endl;
+        cout << "this:" << log_likelihood() << endl;
+
+        cout << endl << endl;
+
+        background = 0.;
+        extra_sigma = 0.171886843613598783E+01;
+        calculate_mu();
+        calculate_C();
+        cout << "true:" << -506.288309991 << endl;
+        cout << "this:" << log_likelihood() << endl;
+
+        abort();*/
+
+
+        /*dataset 3*/
+        /*cout.precision(15);
+        background = -0.869753669161968901E+01;
+        extra_sigma = 0.994907921829712771E+00;
+        calculate_mu();
+        calculate_C();
+
+        cout << endl << "true:" << -379.804965902 << endl;
+        cout << "this:" << log_likelihood() << endl;
+
+        cout << endl << endl;
+
+        background = 0.;
+        extra_sigma = 0.994907921829712771E+00;
+        calculate_mu();
+        calculate_C();
+        cout << "true:" << -503.529750381 << endl;
+        cout << "this:" << log_likelihood() << endl;
+
+        abort();*/
+
+
+
 }
 
 void MyModel::calculate_C()
